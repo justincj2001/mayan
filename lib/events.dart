@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:mayan/addevent.dart';
 import 'package:mayan/newEvent.dart';
@@ -9,6 +10,8 @@ import 'package:mayan/screens/image_screen.dart';
 import 'package:mayan/screens/recording_screen.dart';
 import 'package:mayan/screens/video_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class EventsScreen extends StatefulWidget {
   var index;
@@ -22,6 +25,8 @@ class _EventsScreenState extends State<EventsScreen> {
 List eventdata=[
     
   ];
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
 
 
@@ -141,6 +146,44 @@ List eventdata=[
     ),
     );
   }
+
+
+  
+Future<void> scheduleNotification(
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+      EventProvider eventProvider = Provider.of<EventProvider>(context, listen: false);
+    
+     var datee=eventProvider.eventdata[widget.index]["date"];
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'your channel id',
+    'your channel name',
+    importance: Importance.max,
+    priority: Priority.high,
+    playSound: true,
+    ticker: 'ticker',
+  );
+  var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
+  );
+
+  // Schedule the notification
+  tz.initializeTimeZones();
+  DateTime now=DateTime.now();
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    0, // Notification ID
+    'Scheduled Title',
+    'Scheduled Body',
+    tz.TZDateTime.now(tz.local).add(now.difference(datee)),// Time to show
+    platformChannelSpecifics,
+    androidAllowWhileIdle: true,
+    uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+    matchDateTimeComponents: DateTimeComponents.time,
+  );
+}
+
 
   @override
   void initState() {
@@ -265,6 +308,47 @@ List eventdata=[
                   Text("Videos")
               ],)
               ],
+            ),
+
+            InkWell(
+              onTap: () {
+                try{
+                  scheduleNotification(flutterLocalNotificationsPlugin);
+                final snackBar = SnackBar(
+            content: Text('This is a SnackBar'),
+            action: SnackBarAction(
+              label: 'Close',
+              onPressed: () {
+                // Some code to execute when the user presses the action button
+              },
+            ),
+          );
+
+          // Show the SnackBar
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                catch(e){
+                  print("object");
+                }
+                
+              },
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width-50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9),
+                  color: Color.fromARGB(255, 214, 214, 214)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.calendar_month),
+                      Text("Set Reminder",style: TextStyle(fontWeight: FontWeight.bold,color: Color.fromARGB(255, 118, 118, 118)),),
+                    ],
+                  ),
+                ),
+              ),
             )
           ],
         ),

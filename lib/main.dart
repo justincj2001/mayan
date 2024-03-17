@@ -7,14 +7,34 @@ import 'package:mayan/adapter/fileadapter.dart';
 import 'package:mayan/events.dart';
 import 'package:mayan/newEvent.dart';
 import 'package:mayan/providers/eventProvider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:path_provider/path_provider.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 void main() async{
   await Hive.initFlutter();
   Hive.registerAdapter(FileAdapter());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the local notifications plugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  
+  // Configure the initialization settings
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  // var initializationSettingsIOS = IOSInitializationSettings();
+  var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid, iOS: DarwinInitializationSettings());
+
+  // Initialize the plugin
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      );
+
   runApp(
     MultiProvider(
       providers: [
@@ -93,6 +113,16 @@ class _MyAppState extends State<MyApp> {
 
   
 
+void requestNotificationPermission() async {
+  // Request permission
+  PermissionStatus permissionStatus = await Permission.notification.request();
+
+  if (permissionStatus.isGranted) {
+    print("Notification permission granted");
+  } else {
+    print("Notification permission denied");
+  }
+}
 
 
   @override
@@ -104,6 +134,9 @@ class _MyAppState extends State<MyApp> {
      eventProvider.getList(DateTime.now());
      print("object");
     // getList(DateTime.now(),context);
+    requestNotificationPermission();
+    
+
   }
 
 
