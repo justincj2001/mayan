@@ -15,6 +15,11 @@ class EventProvider with ChangeNotifier {
   List get event => eventdata;
 
 
+  List temporaryimagetoadd=[];
+  List temporaryvideotoadd=[];
+  List temporaryaudiotoadd=[];
+
+
   getList(date)async{
     try{
       eventdata=[];
@@ -97,9 +102,7 @@ String appDocPath = appDocDir.path;
     }
     }
 
-
-
-    updateEventImage(DateTime date, String eventTitle, String eventDesc, int index,files) async {
+updateEventImage(DateTime date, String eventTitle, String eventDesc, int index, List<File> files) async {
   try {
     var box = await Hive.openBox('events');
     var events = await box.get(date.year.toString() + date.month.toString());
@@ -111,20 +114,26 @@ String appDocPath = appDocDir.path;
 
     // Ensure that the index is within the bounds of the events list
     if (index >= 0 && index < events.length) {
-      // Update the event at the specified index
+      // Retrieve the existing event at the specified index
+      var existingEvent = events[index];
+
+      // Append the new images to the existing list
+      List<File> existingImages = List.from(existingEvent["eventImages"] ?? []);
+      existingImages.addAll(files);
+
+      // Update the event with the new list of images
       events[index] = {
         "date": date,
         "eventTitle": eventTitle,
         "eventDesc": eventDesc,
-        "eventImages": files, // assuming files is defined elsewhere
-        "eventAudios": [],
-        "eventVideos": []
+        "eventImages": existingImages,
+        "eventAudios": existingEvent["eventAudios"] ?? [],
+        "eventVideos": existingEvent["eventVideos"] ?? []
       };
 
       // Put the updated list back into the box
       await box.put(date.year.toString() + date.month.toString(), events);
       
-
       // Trigger a UI update if needed
     } else {
       // Handle index out of bounds error
@@ -135,9 +144,7 @@ String appDocPath = appDocDir.path;
   }
 }
 
-
-
-updateEventRecording(DateTime date, String eventTitle, String eventDesc, int index,files) async {
+updateEventRecording(DateTime date, String eventTitle, String eventDesc, int index, List<File> files) async {
   try {
     var box = await Hive.openBox('events');
     var events = await box.get(date.year.toString() + date.month.toString());
@@ -149,20 +156,26 @@ updateEventRecording(DateTime date, String eventTitle, String eventDesc, int ind
 
     // Ensure that the index is within the bounds of the events list
     if (index >= 0 && index < events.length) {
-      // Update the event at the specified index
+      // Retrieve the existing event at the specified index
+      var existingEvent = events[index];
+
+      // Append the new audio files to the existing list
+      List<File> existingAudios = List.from(existingEvent["eventAudios"] ?? []);
+      existingAudios.addAll(files);
+
+      // Update the event with the new list of audio files
       events[index] = {
         "date": date,
         "eventTitle": eventTitle,
         "eventDesc": eventDesc,
-        "eventImages": [], // assuming files is defined elsewhere
-        "eventAudios": files,
-        "eventVideos": []
+        "eventImages": existingEvent["eventImages"] ?? [],
+        "eventAudios": existingAudios,
+        "eventVideos": existingEvent["eventVideos"] ?? []
       };
 
       // Put the updated list back into the box
       await box.put(date.year.toString() + date.month.toString(), events);
       
-
       // Trigger a UI update if needed
     } else {
       // Handle index out of bounds error
@@ -173,11 +186,7 @@ updateEventRecording(DateTime date, String eventTitle, String eventDesc, int ind
   }
 }
 
-
-
-
-
-updateEventVideo(DateTime date, String eventTitle, String eventDesc, int index,files) async {
+updateEventVideo(DateTime date, String eventTitle, String eventDesc, int index, List<File> files) async {
   try {
     var box = await Hive.openBox('events');
     var events = await box.get(date.year.toString() + date.month.toString());
@@ -189,20 +198,26 @@ updateEventVideo(DateTime date, String eventTitle, String eventDesc, int index,f
 
     // Ensure that the index is within the bounds of the events list
     if (index >= 0 && index < events.length) {
-      // Update the event at the specified index
+      // Retrieve the existing event at the specified index
+      var existingEvent = events[index];
+
+      // Append the new video files to the existing list
+      List<File> existingVideos = List.from(existingEvent["eventVideos"] ?? []);
+      existingVideos.addAll(files);
+
+      // Update the event with the new list of video files
       events[index] = {
         "date": date,
         "eventTitle": eventTitle,
         "eventDesc": eventDesc,
-        "eventImages": [], // assuming files is defined elsewhere
-        "eventAudios": [],
-        "eventVideos": files
+        "eventImages": existingEvent["eventImages"] ?? [],
+        "eventAudios": existingEvent["eventAudios"] ?? [],
+        "eventVideos": existingVideos
       };
 
       // Put the updated list back into the box
       await box.put(date.year.toString() + date.month.toString(), events);
       
-
       // Trigger a UI update if needed
     } else {
       // Handle index out of bounds error

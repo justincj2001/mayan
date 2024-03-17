@@ -86,7 +86,10 @@ class _ImageScreenState extends State<ImageScreen> {
                 child: Image.network("https://cdn3d.iconscout.com/3d/premium/thumb/no-data-found-4810740-4009512.png"),),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(eventProvider.eventdata[widget.index],widget.index)));
+                    if(widget.index==null)
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen()));
+                    else
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(data: eventProvider.eventdata[widget.index],index:widget.index)));
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -113,7 +116,7 @@ class _ImageScreenState extends State<ImageScreen> {
                 child: Image.network("https://cdn3d.iconscout.com/3d/premium/thumb/no-data-found-4810740-4009512.png"),),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(eventProvider.eventdata[widget.index],widget.index)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(data:eventProvider.eventdata[widget.index],index:widget.index)));
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -144,7 +147,7 @@ class _ImageScreenState extends State<ImageScreen> {
                               if(index==eventProvider.eventdata[widget.index]["eventImages"].length){
                                 return InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(eventProvider.eventdata[widget.index],widget.index)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(data:eventProvider.eventdata[widget.index],index:widget.index)));
                     },
                     child: Container(
                       alignment: Alignment.center,

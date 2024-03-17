@@ -124,9 +124,17 @@ setState(() {
                 Expanded(child: Container()),
                 InkWell(
                   onTap: () async{
-                    await eventProvider.updateEventImage(eventProvider.eventdata[widget.index]["date"], eventProvider.eventdata[widget.index]["eventTitle"], eventProvider.eventdata[widget.index]["eventDesc"], widget.index, files);
-                    await eventProvider.getList(eventProvider.eventdata[widget.index]["date"]);
-                    Navigator.pop(context);
+                    try {
+  await eventProvider.updateEventImage(eventProvider.eventdata[widget.index]["date"], eventProvider.eventdata[widget.index]["eventTitle"], eventProvider.eventdata[widget.index]["eventDesc"], widget.index, files);
+  await eventProvider.getList(eventProvider.eventdata[widget.index]["date"]);
+  Navigator.pop(context);
+} catch (e) {
+  EventProvider eventProvider = Provider.of<EventProvider>(context, listen: false);
+    
+     eventProvider.temporaryimagetoadd=files;
+     Navigator.pop(context);
+  Navigator.pop(context);
+}
                     // setEvent(widget.data["date"], widget.data["eventTitle"], widget.data["eventDesc"],widget.index,context);
                   },
                   child: Container(

@@ -33,21 +33,36 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        IconButton(
-          icon: Icon(
-            _playerState == PlayerState.playing ? Icons.pause : Icons.play_arrow,
-          ),
-          onPressed: () {
-            if (_playerState == PlayerState.playing) {
-              _audioPlayer.pause();
-            } else {
-              _audioPlayer.play(DeviceFileSource(widget.audioFilePath));
-            }
-          },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(color: Colors.blue[50]),
+        height: 70,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    _playerState == PlayerState.playing ? Icons.pause : Icons.play_arrow,
+                  ),
+                  onPressed: () {
+                    if (_playerState == PlayerState.playing) {
+                      _audioPlayer.pause();
+                    } else {
+                      _audioPlayer.play(DeviceFileSource(widget.audioFilePath));
+                    }
+                  },
+                ),
+                Container(
+                  
+                  width: MediaQuery.of(context).size.width-70,
+                  child: Divider(color: Colors.black,))
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
