@@ -89,7 +89,7 @@ class _ImageScreenState extends State<ImageScreen> {
                     if(widget.index==null)
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen()));
                     else
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen(data: eventProvider.eventdata[widget.index],index:widget.index)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen()));
                   },
                   child: Container(
                     alignment: Alignment.center,

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 class RecordingScreen extends StatefulWidget {
   // var data;
   var index;
+  
   RecordingScreen({super.key,this.index});
 
   @override
@@ -80,6 +81,70 @@ String appDocPath = appDocDir.path;
               ],
             ),
           ),
+          widget.index==null?eventProvider.temporaryaudiotoadd.length==0?Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                height: 400,
+                child: Image.network("https://cdn3d.iconscout.com/3d/premium/thumb/no-data-found-4810740-4009512.png"),),
+                InkWell(
+                  onTap: () {
+                    if(widget.index==null)
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen()));
+                    else
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen()));
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 40,
+                    width: 140,
+                    decoration: BoxDecoration(color: Colors.cyan,borderRadius: BorderRadius.circular(9)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.add),
+                          Text("Add Recordings",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                    )),
+                )
+            ],
+          ):Container(
+            height: MediaQuery.of(context).size.height-120,
+            child: ListView.builder(
+            
+                            shrinkWrap: true,
+            
+                            itemCount: eventProvider.temporaryaudiotoadd.length+1,
+            
+                            itemBuilder: (BuildContext context, int index) {
+                              if(index==eventProvider.temporaryaudiotoadd.length){
+                                return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen()));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      width: 140,
+                      decoration: BoxDecoration(color: Colors.cyan,borderRadius: BorderRadius.circular(9)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add),
+                            Text("Add Recordings",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      )),
+                  );
+                              }
+                              return Container(
+                                height: 70,
+                                child: AudioPlayerWidget(audioFilePath: eventProvider.temporaryaudiotoadd[index].path)
+);
+                            })):
           eventProvider.eventdata[widget.index]["eventAudios"].length==0?Column(
             children: [
               Container(
@@ -88,7 +153,7 @@ String appDocPath = appDocDir.path;
                 child: Image.network("https://cdn3d.iconscout.com/3d/premium/thumb/no-data-found-4810740-4009512.png"),),
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen(eventProvider.eventdata[widget.index],widget.index)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen(data:eventProvider.eventdata[widget.index],index:widget.index)));
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -119,7 +184,7 @@ String appDocPath = appDocDir.path;
                               if(index==eventProvider.eventdata[widget.index]["eventAudios"].length){
                                 return InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen(eventProvider.eventdata[widget.index],widget.index)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesRecordingScreen(data:eventProvider.eventdata[widget.index],index:widget.index)));
                     },
                     child: Container(
                       alignment: Alignment.center,

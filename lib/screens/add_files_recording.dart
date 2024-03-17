@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class AddFilesRecordingScreen extends StatefulWidget {
   var data;
   var index;
-  AddFilesRecordingScreen(this.data,this.index,{super.key});
+  AddFilesRecordingScreen({super.key,this.data,this.index,});
 
   @override
   State<AddFilesRecordingScreen> createState() => _AddFilesRecordingScreenState();
@@ -125,10 +125,19 @@ setState(() {
                 Expanded(child: Container()),
                 InkWell(
                   onTap: () async{
+                    try{
                     await eventProvider.updateEventRecording(eventProvider.eventdata[widget.index]["date"], eventProvider.eventdata[widget.index]["eventTitle"], eventProvider.eventdata[widget.index]["eventDesc"], widget.index, files);
                     await eventProvider.getList(eventProvider.eventdata[widget.index]["date"]);
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     // setEvent(widget.data["date"], widget.data["eventTitle"], widget.data["eventDesc"],widget.index,context);
+                    } catch (e) {
+  EventProvider eventProvider = Provider.of<EventProvider>(context, listen: false);
+    
+     eventProvider.temporaryaudiotoadd=files;
+     Navigator.pop(context);
+  Navigator.pop(context);
+}
                   },
                   child: Container(
                     alignment: Alignment.center,
