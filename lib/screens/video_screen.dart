@@ -34,7 +34,7 @@ class _VideoScreenState extends State<VideoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 70),
                 child: Row(
                   children: [
                     Stack(

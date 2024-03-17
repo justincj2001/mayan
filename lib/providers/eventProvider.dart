@@ -93,7 +93,7 @@ String appDocPath = appDocDir.path;
       // for(int i=0;i<files.length;i++){
       
       // }
-      event.add({"date":date,"eventTitle":eventtitle,"eventDesc":eventdesc,"eventImages":[],"eventAudios":[],"eventVideos":[]});
+      event.add({"date":date,"eventTitle":eventtitle,"eventDesc":eventdesc,"eventImages":temporaryimagetoadd,"eventAudios":temporaryaudiotoadd,"eventVideos":temporaryvideotoadd});
     await box.put(date.year.toString()+date.month.toString(), event);
     
     }

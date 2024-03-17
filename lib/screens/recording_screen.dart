@@ -76,7 +76,7 @@ String appDocPath = appDocDir.path;
                   
                   ]),
                   SizedBox(width: 20,),
-                Text("Recordingss",style: TextStyle(fontSize: 27),)
+                Text("Recordings",style: TextStyle(fontSize: 27),)
               ],
             ),
           ),

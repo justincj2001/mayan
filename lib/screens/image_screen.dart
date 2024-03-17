@@ -78,7 +78,7 @@ class _ImageScreenState extends State<ImageScreen> {
               ],
             ),
           ),
-          widget.index==null?Column(
+          widget.index==null?eventProvider.temporaryimagetoadd.length==0?Column(
             children: [
               Container(
                 alignment: Alignment.center,
@@ -107,7 +107,40 @@ class _ImageScreenState extends State<ImageScreen> {
                     )),
                 )
             ],
-          ):
+          ):Container(
+            height: MediaQuery.of(context).size.height-120,
+            child: ListView.builder(
+            
+                            shrinkWrap: true,
+            
+                            itemCount: eventProvider.temporaryimagetoadd.length+1,
+            
+                            itemBuilder: (BuildContext context, int index) {
+                              if(index==eventProvider.temporaryimagetoadd.length){
+                                return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesImageScreen()));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      width: 140,
+                      decoration: BoxDecoration(color: Colors.cyan,borderRadius: BorderRadius.circular(9)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add),
+                            Text("Add Images",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      )),
+                  );
+                              }
+                              return Container(
+                                height: 500,
+                                child: Image.file(eventProvider.temporaryimagetoadd[index],));
+                            })):
           eventProvider.eventdata[widget.index]["eventImages"].length==0?Column(
             children: [
               Container(

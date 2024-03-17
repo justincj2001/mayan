@@ -249,6 +249,9 @@ Expanded(
                   child: InkWell(
                     onTap: () {
                       // setEvent(DateTime.now(), "eventtitle", "eventdesc");
+                      eventProvider.temporaryimagetoadd=[];
+                      eventProvider.temporaryaudiotoadd=[];
+                      eventProvider.temporaryvideotoadd=[];
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>NewEventScreen(date: _currentDate2,)));
                     },
                     child: Container(
