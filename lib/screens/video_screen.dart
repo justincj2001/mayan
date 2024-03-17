@@ -58,6 +58,75 @@ class _VideoScreenState extends State<VideoScreen> {
                 ),
               ),
               SizedBox(height: 20),
+              widget.index==null?eventProvider.temporaryvideotoadd.length==0?
+              Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: 400,
+                          child: Image.network("https://cdn3d.iconscout.com/3d/premium/thumb/no-data-found-4810740-4009512.png"),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddFilesVideoScreen()));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            width: 140,
+                            decoration: BoxDecoration(color: Colors.cyan, borderRadius: BorderRadius.circular(9)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.add),
+                                  Text(
+                                    "Add Videos",
+                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ):Container(
+            height: MediaQuery.of(context).size.height-120,
+            child: ListView.builder(
+            
+                            shrinkWrap: true,
+            
+                            itemCount: eventProvider.temporaryvideotoadd.length+1,
+            
+                            itemBuilder: (BuildContext context, int index) {
+                              if(index==eventProvider.temporaryvideotoadd.length){
+                                return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AddFilesVideoScreen()));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      width: 140,
+                      decoration: BoxDecoration(color: Colors.cyan,borderRadius: BorderRadius.circular(9)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.add),
+                            Text("Add Videos",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      )),
+                  );
+                              }
+                              return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: VideoDisplay(videopath: eventProvider.temporaryvideotoadd[index]),
+                            ),
+                          );
+                            })):
               eventProvider.eventdata[widget.index]["eventVideos"].isEmpty
                   ? Column(
                       children: [
@@ -68,7 +137,7 @@ class _VideoScreenState extends State<VideoScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddFilesVideoScreen(eventProvider.eventdata[widget.index], widget.index)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddFilesVideoScreen(data:eventProvider.eventdata[widget.index],index: widget.index)));
                           },
                           child: Container(
                             alignment: Alignment.center,

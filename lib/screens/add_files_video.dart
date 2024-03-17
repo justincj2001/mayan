@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class AddFilesVideoScreen extends StatefulWidget {
   var data;
   var index;
-  AddFilesVideoScreen(this.data,this.index,{super.key});
+  AddFilesVideoScreen({super.key,this.data,this.index,});
 
   @override
   State<AddFilesVideoScreen> createState() => _AddFilesVideoScreenState();
@@ -125,10 +125,19 @@ setState(() {
                 Expanded(child: Container()),
                 InkWell(
                   onTap: () async{
+                    try{
                     await eventProvider.updateEventVideo(eventProvider.eventdata[widget.index]["date"], eventProvider.eventdata[widget.index]["eventTitle"], eventProvider.eventdata[widget.index]["eventDesc"], widget.index, files);
                     await eventProvider.getList(eventProvider.eventdata[widget.index]["date"]);
                     Navigator.pop(context);
+                    Navigator.pop(context);
                     // setEvent(widget.data["date"], widget.data["eventTitle"], widget.data["eventDesc"],widget.index,context);
+                    } catch (e) {
+  EventProvider eventProvider = Provider.of<EventProvider>(context, listen: false);
+    
+     eventProvider.temporaryvideotoadd=files;
+     Navigator.pop(context);
+  Navigator.pop(context);
+}
                   },
                   child: Container(
                     alignment: Alignment.center,
